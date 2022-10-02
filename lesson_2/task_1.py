@@ -12,12 +12,17 @@ main_data = [["Изготовитель системы", "Название ОС"
 files = ["lesson_2/info_1.txt", "lesson_2/info_1.txt", "lesson_2/info_3.txt"]
 
 
-# Decoding and get text
-def get_text(i):
+# Decoding 
+def get_decoding(i):
     with open(i, 'rb') as f_txt:
-        decoding = chardet.detect(f_txt.read())["encoding"] 
-        f_txt.seek(0)
-        text = f_txt.read().decode(decoding)
+        decoding = chardet.detect(f_txt.read())["encoding"]
+        return decoding
+
+# Get text
+def get_text(i):
+    decoding = get_decoding(i)
+    with open(i, 'r', encoding=decoding) as f_txt:
+        text = f_txt.read()
     return text
 
 # Search, preparation and use "regular"
@@ -45,4 +50,14 @@ def write_to_csv(file):
     get_data() # Function for homework conditions
 
 
+# Print result
+def check_task(file):
+    decoding = get_decoding(file)
+    with open(file, 'r', encoding=decoding) as f:
+        info = csv.reader(f)
+        for line in info:
+            print(line) 
+
 write_to_csv("lesson_2/data_base.csv")
+check_task("lesson_2/data_base.csv")
+
